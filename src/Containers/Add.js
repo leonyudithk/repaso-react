@@ -1,24 +1,57 @@
-import { Input, Select } from "antd";
-import React from "react";
+import { Alert, Input, Select } from "antd";
+import React, { useState } from "react";
 import useForm from "../Hooks/useForm";
+import { DivForm, FormStyled } from "../Styles/Styled";
+import uploadFile from "../helpers/uploadFile";
+import { PostData } from "../Peticiones/actions";
+import { url } from "../helpers/url";
+import { useNavigate } from "react-router-dom";
 
 const Add = () => {
-  const [dataForm, handleOnChange, handleOnChangeSelect] = useForm({
-    title: "",
-    year: "",
-    description: "",
-    poster: "",
-    type: "",
-    value: "",
-  });
+  const [activeImg, setActiveImg] = useState(false);
+  const [activeAlert, setActiveAlert] = useState(false);
+  const navigate = useNavigate()
+  const [dataForm, handleOnChange, handleOnChangeSelect, handleUpload] =
+    useForm({
+      title: "",
+      year: "",
+      description: "",
+      imagen: "",
+      type: "",
+    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Estamos en el Submit", dataForm);
+    let obj = {
+      id: Math.floor(Math.random() * 200),
+      Title: dataForm.title,
+      Year: dataForm.year,
+      Poster: dataForm.imagen,
+      Type: dataForm.type      
+    };
+   const response = await PostData(url, obj)
+   console.log(response)
+   if( response.status === 200 || response.status === 201  ){
+       setActiveAlert(true)
+       setTimeout(() => {
+        navigate("/")
+       }, 2000);
+   }
+
   };
+
+  const handleUploadFile = async (e) => {
+    const file = e.target.files[0];
+    uploadFile(file).then((response) => {
+      handleUpload(response);
+      setActiveImg(response);
+    });
+  };
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <DivForm>
+      <FormStyled onSubmit={handleSubmit}>
         <Input
           name="title"
           onChange={handleOnChange}
@@ -49,9 +82,29 @@ const Add = () => {
             { value: "Adulto", label: "Adulto" },
           ]}
         />
-        <button type="submit">Guardar</button>
-      </form>
-    </div>
+        <input type="file" name="imagen" onChange={handleUploadFile} />
+        {activeImg !== false && (
+          <img
+            src={activeImg}
+            alt=""
+            style={{
+              width: 50,
+            }}
+          />
+        )}
+        <button disabled={activeImg === false} type="submit">
+          Guardar
+        </button>
+      </FormStyled>
+      {activeAlert  && (
+        <Alert
+          message="Se Guardo Exitosamente"
+          description="La Película se ha guardo muy bien.."
+          type="success"
+          showIcon
+        />
+      )}
+    </DivForm>
   );
 };
 

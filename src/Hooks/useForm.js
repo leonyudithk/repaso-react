@@ -12,10 +12,15 @@ const useForm = ({ initialState = {} }) => {
         ...dataForm,
         type: e
     })
-
   }
-
-  return [dataForm, handleOnChange, handleOnChangeSelect];
+  const handleUpload = (url) => {
+    setDataForm({
+      ...dataForm,
+      imagen: url,
+    });
+    
+  };
+  return [dataForm, handleOnChange, handleOnChangeSelect, handleUpload];
 };
 
 export default useForm;

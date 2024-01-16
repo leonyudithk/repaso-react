@@ -8,21 +8,21 @@ const Details = ({ movie }) => {
       <h3>
         Tipo: {movie.Type} / Año: {movie.Year} / Valoración: {movie.Value}
       </h3>
+      <iframe
+        id="inlineFrameExample"
+        title="Inline Frame Example"
+        width="950"
+        height="400"
+        src={movie.Trailer}
+      ></iframe>
+      <p>{movie?.Description}</p>
       <img
         src={movie?.Carrusel}
         alt=""
         style={{
-          width: 480,
+          width: 950,
         }}
       />
-      <p>{movie?.Description}</p>
-      <iframe
-        id="inlineFrameExample"
-        title="Inline Frame Example"
-        width="480"
-        height="200"
-        src={movie.Trailer}
-      ></iframe>
     </div>
   );
 };

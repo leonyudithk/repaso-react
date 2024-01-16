@@ -1,27 +1,22 @@
 import { Menu } from "antd";
-import { Header } from "antd/es/layout/layout";
+import Sider from "antd/es/layout/Sider";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const headerStyle = {
+const siderStyle = {
+  backgroundColor: "#000",
+};
+const siderStyle2 = {
+  marginTop: "40px",
   textAlign: "center",
-  color: "#fff",
-  height: 64,
-  paddingInline: 48,
-  lineHeight: "64px",
-  backgroundColor: "#000",
-};
-
-const headerStyle2 = {
-  display: "flex",
-  alignItems: "center",
+  lineHeight: "100px",
   color: "#fff",
   backgroundColor: "#000",
 };
-const NavBar = () => {
+const Sidebar = () => {
   return (
-    <Header style={headerStyle2}>
-      <Menu mode="horizontal" style={headerStyle} defaultSelectedKeys={["1"]}>
+    <Sider width="15%" style={siderStyle}>
+      <Menu mode="vertical" style={siderStyle2} defaultSelectedKeys={["1"]}>
         <Menu.Item key="1">
           <Link to="/" style={{ margin: "5px" }}>
             Home
@@ -38,8 +33,8 @@ const NavBar = () => {
           </Link>
         </Menu.Item>
       </Menu>
-    </Header>
+    </Sider>
   );
 };
 
-export default NavBar;
+export default Sidebar;
